@@ -13,7 +13,25 @@ public class Task {
 	private Date createdAt;
 	private Date updatedAt;
 	
+	public Task(int id, int idProject, String name, String description, String notes, boolean completed, Date deadline,
+			Date createdAt, Date updatedAt) {
+		super();
+		this.id = id;
+		this.idProject = idProject;
+		this.name = name;
+		this.description = description;
+		this.notes = notes;
+		Completed = completed;
+		this.deadline = deadline;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 	
+	public Task() {
+		this.createdAt = new Date();
+	}
+
+
 	public int getId() {
 		return id;
 	}
