@@ -42,7 +42,7 @@ public class TaskController {
 			throw new SQLException("Erro ao salvar tarefa"
 					+ e.getMessage(), e);
 		} finally {
-			ConnectionFactory.closeConnetion(conn);
+			ConnectionFactory.closeConnetion(conn, statement);
 		}
 	}
 	
@@ -63,11 +63,11 @@ public class TaskController {
 		} catch (SQLException e) {
 			throw new SQLException("Erro ao remover tarefa", e);
 		} finally {
-			ConnectionFactory.closeConnetion(conn);
+			ConnectionFactory.closeConnetion(conn, statement);
 		}
 	}
 	
-	public List<Task> getAll(int idProject) {
+	public List<Task> getAll(int idProject) throws RuntimeException {
 		String sql = "SELECT * FROM tasks WHERE idProject = ?";
 		Connection conn = null;
 		PreparedStatement statement = null;
@@ -95,9 +95,12 @@ public class TaskController {
 				
 				tasks.add(task);
 			}
-		}catch(Exception e) {
-			
+		}catch (SQLException e) {
+			throw new RuntimeException("Erro ao listar tarefas"
+					+ e.getMessage(), e);
+		} finally {
+			ConnectionFactory.closeConnetion(conn, statement, result);
 		}
-		return null;		
+		return tasks;		
 	}
 }
