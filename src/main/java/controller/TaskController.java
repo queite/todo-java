@@ -3,13 +3,9 @@ package controller;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-<<<<<<< HEAD
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-=======
-import java.sql.SQLException;
->>>>>>> fd7300a33d3b8167259c4f9af79096adefb21b35
 import java.util.List;
 
 import model.Task;
@@ -72,7 +68,6 @@ public class TaskController {
 	}
 	
 	public List<Task> getAll(int idProject) {
-<<<<<<< HEAD
 		String sql = "SELECT * FROM tasks WHERE idProject = ?";
 		Connection conn = null;
 		PreparedStatement statement = null;
@@ -103,8 +98,6 @@ public class TaskController {
 		}catch(Exception e) {
 			
 		}
-=======
->>>>>>> fd7300a33d3b8167259c4f9af79096adefb21b35
 		return null;		
 	}
 }
