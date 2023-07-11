@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ProjectController {
 			statement.setDate(3, new Date(project.getCreatedAt().getTime()));
 			statement.setDate(4, new Date(project.getUpdatedAt().getTime()));
 			statement.execute();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new RuntimeException("Erro ao salvar projeto" + e.getMessage(), e);
 		} finally {
 			ConnectionFactory.closeConnetion(conn, statement);
@@ -55,7 +56,7 @@ public class ProjectController {
 			statement.setDate(4, new Date(project.getUpdatedAt().getTime()));
 			statement.setInt(5, project.getId());
 			statement.execute();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new RuntimeException("Erro ao atualizar projeto" + e.getMessage(), e);
 		} finally {
 			ConnectionFactory.closeConnetion(conn, statement);
@@ -63,7 +64,7 @@ public class ProjectController {
 	}
 	
 	public void removeById(int projectId) {
-		String sql = "DELETE * FROM projects WHERE id = ?";
+		String sql = "DELETE FROM projects WHERE id = ?";
 		Connection conn = null;
 		PreparedStatement statement = null;
 		
@@ -72,7 +73,7 @@ public class ProjectController {
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, projectId);
 			statement.execute();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new RuntimeException("Erro ao remover projeto" + e.getMessage(), e);
 		} finally {
 			ConnectionFactory.closeConnetion(conn, statement);
@@ -101,7 +102,7 @@ public class ProjectController {
 				
 				projects.add(project);
 			}
-		}catch (Exception e) {
+		}catch (SQLException e) {
 			throw new RuntimeException("Erro ao listar projetos" + e.getMessage(), e);
 		} finally {
 			ConnectionFactory.closeConnetion(conn, statement, result);
