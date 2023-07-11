@@ -8,7 +8,7 @@ public class Task {
 	private String name;
 	private String description;
 	private String notes;
-	private boolean Completed;
+	private boolean completed;
 	private Date deadline;
 	private Date createdAt;
 	private Date updatedAt;
@@ -21,7 +21,7 @@ public class Task {
 		this.name = name;
 		this.description = description;
 		this.notes = notes;
-		Completed = completed;
+		this.completed = completed;
 		this.deadline = deadline;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
@@ -83,12 +83,12 @@ public class Task {
 
 
 	public boolean getCompleted() {
-		return Completed;
+		return completed;
 	}
 
 
 	public void setCompleted(boolean Completed) {
-		this.Completed = Completed;
+		this.completed = Completed;
 	}
 
 
@@ -125,7 +125,7 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [id=" + id + ", idProject=" + idProject + ", name=" + name + ", description=" + description
-				+ ", notes=" + notes + ", inCompleted=" + Completed + ", deadline=" + deadline + ", createdAt="
+				+ ", notes=" + notes + ", inCompleted=" + completed + ", deadline=" + deadline + ", createdAt="
 				+ createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 	
