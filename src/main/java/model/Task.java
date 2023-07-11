@@ -8,15 +8,14 @@ public class Task {
 	private String name;
 	private String description;
 	private String notes;
-	private boolean completed;
+	private int completed;
 	private Date deadline;
 	private Date createdAt;
 	private Date updatedAt;
 	
-	public Task(int id, int idProject, String name, String description, String notes, boolean completed, Date deadline,
+	public Task(int idProject, String name, String description, String notes, int completed, Date deadline,
 			Date createdAt, Date updatedAt) {
 		super();
-		this.id = id;
 		this.idProject = idProject;
 		this.name = name;
 		this.description = description;
@@ -29,6 +28,7 @@ public class Task {
 	
 	public Task() {
 		this.createdAt = new Date();
+		this.updatedAt = new Date();
 	}
 
 
@@ -82,12 +82,12 @@ public class Task {
 	}
 
 
-	public boolean getCompleted() {
+	public int getCompleted() {
 		return completed;
 	}
 
 
-	public void setCompleted(boolean Completed) {
+	public void setCompleted(int Completed) {
 		this.completed = Completed;
 	}
 
@@ -124,9 +124,9 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", idProject=" + idProject + ", name=" + name + ", description=" + description
-				+ ", notes=" + notes + ", inCompleted=" + completed + ", deadline=" + deadline + ", createdAt="
-				+ createdAt + ", updatedAt=" + updatedAt + "]";
+		return "Task [id= " + id + ", idProject= " + idProject + ", name= " + name + ", description= " + description
+				+ ", notes= " + notes + ", IsCompleted= " + completed + ", deadline= " + deadline + ", createdAt="
+				+ createdAt + ", updatedAt= " + updatedAt + "]";
 	}
 	
 }
