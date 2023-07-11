@@ -17,6 +17,11 @@ public class Project {
 		this.updateddAt = updateddAt;
 	}
 	
+	public Project( ) {
+		this.createdAt = new Date();
+		this.updateddAt = new Date();
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -40,11 +45,11 @@ public class Project {
 		this.description = description;
 	}
 
-	public Date getUpdateddAt() {
+	public Date getUpdatedAt() {
 		return updateddAt;
 	}
 
-	public void setUpdateddAt(Date updateddAt) {
+	public void setUpdatedAt(Date updateddAt) {
 		this.updateddAt = updateddAt;
 	}
 
