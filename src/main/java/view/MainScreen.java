@@ -24,7 +24,11 @@ import javax.swing.AbstractListModel;
 import javax.swing.JLayeredPane;
 import javax.swing.JTable;
 import java.awt.CardLayout;
+
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
 import java.awt.BorderLayout;
 
 public class MainScreen extends JFrame {
@@ -52,7 +56,7 @@ public class MainScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public MainScreen() {
-		setMinimumSize(new Dimension(400, 600));
+		setMinimumSize(new Dimension(600, 600));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 543, 392);
 		contentPane = new JPanel();
@@ -95,15 +99,17 @@ public class MainScreen extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(panelHeader, GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(panelListProjects, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+								.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(panelProjects, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panelProjects, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(panelTasks, GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(panelListProjects, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(panelListTasks, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(panelTasks, GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(panelListTasks, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)))))
 					.addGap(3))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -120,11 +126,17 @@ public class MainScreen extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(panelListTasks, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())
-						.addComponent(panelListProjects, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+						.addComponent(panelListProjects, GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)))
 		);
 		panelListTasks.setLayout(new BorderLayout(0, 0));
 		
 		table = new JTable();
+		table.setShowVerticalLines(false);
+		table.setRowHeight(40);
+//		System.out.println(table.getTableHeader().getBackground());
+//		table.getTableHeader().setBackground(Color.black);
+//		System.out.println(table.getTableHeader().getBackground());
+		decorateTableTasks();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null},
@@ -148,10 +160,12 @@ public class MainScreen extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.setBounds(10, 11, 306, 413);
-		JScrollPane scrollPane = new JScrollPane(table);
-		panelListTasks.add(scrollPane);
-		
+
+//		table.setBounds(10, 11, 306, 413);	
+		JScrollPane scrollPanelTasks = new JScrollPane(table);
+		panelListTasks.add(scrollPanelTasks);
+		panelListProjects.setLayout(new BorderLayout(0, 0));
+        
 		JList list = new JList();
 		list.setFixedCellHeight(40);
 		list.setModel(new AbstractListModel() {
@@ -166,22 +180,7 @@ public class MainScreen extends JFrame {
 		list.setSelectionBackground(new Color(151, 0, 151));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setFont(new Font("Segoe UI", Font.BOLD, 13));
-		GroupLayout gl_panelListProjects = new GroupLayout(panelListProjects);
-		gl_panelListProjects.setHorizontalGroup(
-			gl_panelListProjects.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelListProjects.createSequentialGroup()
-					.addGap(161)
-					.addComponent(list, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(8))
-		);
-		gl_panelListProjects.setVerticalGroup(
-			gl_panelListProjects.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelListProjects.createSequentialGroup()
-					.addGap(9)
-					.addComponent(list, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-					.addGap(9))
-		);
-		panelListProjects.setLayout(gl_panelListProjects);
+		panelListProjects.add(list);
 		
 		JLabel labelTasks = new JLabel("Tarefas");
 		labelTasks.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -240,5 +239,11 @@ public class MainScreen extends JFrame {
 		);
 		panelProjects.setLayout(gl_panelProjects);
 		contentPane.setLayout(gl_contentPane);
+	}
+	public void decorateTableTasks() {
+		table.getTableHeader().setFont(new Font("Segoi UI", Font.BOLD, 14));
+		table.getTableHeader().setBackground(new Color(94,0,94));
+		table.getTableHeader().setForeground(new Color(255,255,255));
+		table.setAutoCreateRowSorter(true);
 	}
 }
