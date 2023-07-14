@@ -30,6 +30,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainScreen extends JFrame {
 
@@ -216,6 +218,13 @@ public class MainScreen extends JFrame {
 		labelProjects.setForeground(new Color(64, 0, 64));
 		
 		JLabel labelProjectsAdd = new JLabel("");
+		labelProjectsAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen();
+				projectDialogScreen.setVisible(true);
+			}
+		});
 		labelProjectsAdd.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelProjectsAdd.setIcon(new ImageIcon("C:\\Users\\Queite\\eclipse-workspace\\todo\\src\\main\\resources\\plus-16.png"));
 		GroupLayout gl_panelProjects = new GroupLayout(panelProjects);
