@@ -21,6 +21,7 @@ import javax.swing.JList;
 import java.awt.Dimension;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JLayeredPane;
 import javax.swing.JTable;
 import java.awt.CardLayout;
@@ -29,19 +30,28 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import controller.ProjectController;
+import controller.TaskController;
+import model.Project;
+
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.List;
 
 public class MainScreen extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
+	private JList<Project> list;
 
+	ProjectController projectController;
+	TaskController taskController;
+	
+	DefaultListModel<Project> projectModel;
 	/**
 	 * Launch the application.
 	 */
@@ -172,7 +182,7 @@ public class MainScreen extends JFrame {
 		panelListTasks.add(scrollPanelTasks);
 		panelListProjects.setLayout(new BorderLayout(0, 0));
         
-		JList list = new JList();
+		list = new JList<Project>();
 		list.setFixedCellHeight(40);
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {};
@@ -197,7 +207,7 @@ public class MainScreen extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				TaskDialogScreen taskDialogScreen = new TaskDialogScreen();
-				taskDialogScreen.setProject(null);
+//				taskDialogScreen.setProject(null);
 				taskDialogScreen.setVisible(true);
 				}
 		});
@@ -235,6 +245,11 @@ public class MainScreen extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen();
 				projectDialogScreen.setVisible(true);
+				projectDialogScreen.addWindowListener(new WindowAdapter() {
+					public void windowClosed(WindowEvent e) {
+						loadProjects();
+					}
+				});
 			}
 		});
 		labelProjectsAdd.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -260,11 +275,34 @@ public class MainScreen extends JFrame {
 		);
 		panelProjects.setLayout(gl_panelProjects);
 		contentPane.setLayout(gl_contentPane);
+		initDataControler();
+		initComponentsModel();
 	}
 	public void decorateTableTasks() {
 		table.getTableHeader().setFont(new Font("Segoi UI", Font.BOLD, 14));
 		table.getTableHeader().setBackground(new Color(94,0,94));
 		table.getTableHeader().setForeground(new Color(255,255,255));
 		table.setAutoCreateRowSorter(true);
+	}
+	
+	public void initDataControler() {
+		projectController = new ProjectController();
+		taskController = new TaskController();
+	}
+	
+	public void initComponentsModel() {
+		projectModel = new DefaultListModel<Project>();
+		loadProjects();
+	}
+	
+	public void loadProjects() {
+		List<Project> projects = projectController.getAll();
+		projectModel.clear();
+		
+		for (int i = 0; i < projects.size(); i += 1) {
+			projectModel.addElement(projects.get(i));
+		}
+		
+		list.setModel(projectModel);
 	}
 }
