@@ -35,6 +35,10 @@ import java.awt.event.MouseEvent;
 
 public class MainScreen extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 
@@ -189,6 +193,14 @@ public class MainScreen extends JFrame {
 		labelTasks.setForeground(new Color(64, 0, 64));
 		
 		JLabel labelTasksAdd = new JLabel("");
+		labelTasksAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TaskDialogScreen taskDialogScreen = new TaskDialogScreen();
+				taskDialogScreen.setProject(null);
+				taskDialogScreen.setVisible(true);
+				}
+		});
 		labelTasksAdd.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelTasksAdd.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		labelTasksAdd.setIcon(new ImageIcon("C:\\Users\\Queite\\eclipse-workspace\\todo\\src\\main\\resources\\plus-16.png"));
