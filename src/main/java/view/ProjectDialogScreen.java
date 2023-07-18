@@ -125,13 +125,18 @@ public class ProjectDialogScreen extends JDialog {
 		lableSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Project project = new Project();
-				project.setName(textFieldName.getText());
-				project.setDescription(textAreaDescription.getText());
-				
-				controller.save(project);
-				
-				JOptionPane.showMessageDialog(rootPane, "Projeto Salvo com sucesso");
+				try {
+					Project project = new Project();
+					project.setName(textFieldName.getText());
+					project.setDescription(textAreaDescription.getText());
+					
+					controller.save(project);
+					
+					JOptionPane.showMessageDialog(rootPane, "Projeto Salvo com sucesso");
+					
+				}catch(Exception er){
+					JOptionPane.showMessageDialog(rootPane, er);
+				}
 				
 				Window window = SwingUtilities.getWindowAncestor(lableSave);
 				window.dispose();
