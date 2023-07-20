@@ -8,12 +8,12 @@ public class Task {
 	private String name;
 	private String description;
 	private String notes;
-	private int completed;
+	private boolean completed;
 	private Date deadline;
 	private Date createdAt;
 	private Date updatedAt;
 	
-	public Task(int idProject, String name, String description, String notes, int completed, Date deadline,
+	public Task(int idProject, String name, String description, String notes, boolean completed, Date deadline,
 			Date createdAt, Date updatedAt) {
 		super();
 		this.idProject = idProject;
@@ -82,12 +82,12 @@ public class Task {
 	}
 
 
-	public int getCompleted() {
+	public boolean getCompleted() {
 		return completed;
 	}
 
 
-	public void setCompleted(int Completed) {
+	public void setCompleted(boolean Completed) {
 		this.completed = Completed;
 	}
 

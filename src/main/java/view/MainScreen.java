@@ -33,6 +33,8 @@ import javax.swing.table.TableColumn;
 import controller.ProjectController;
 import controller.TaskController;
 import model.Project;
+import model.Task;
+import util.TaskTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
@@ -52,6 +54,7 @@ public class MainScreen extends JFrame {
 	TaskController taskController;
 	
 	DefaultListModel<Project> projectModel;
+	TaskTableModel taskModel;
 	/**
 	 * Launch the application.
 	 */
@@ -147,35 +150,36 @@ public class MainScreen extends JFrame {
 		panelListTasks.setLayout(new BorderLayout(0, 0));
 		
 		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setShowVerticalLines(false);
 		table.setRowHeight(40);
 //		System.out.println(table.getTableHeader().getBackground());
 //		table.getTableHeader().setBackground(Color.black);
 //		System.out.println(table.getTableHeader().getBackground());
 		decorateTableTasks();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"Nome", "Descricao", "Prazo", "Concluida"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, Boolean.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, true
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
+//		table.setModel(new DefaultTableModel(
+//			new Object[][] {
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//			},
+//			new String[] {
+//				"Nome", "Descricao", "Prazo", "Concluida"
+//			}
+//		) {
+//			Class[] columnTypes = new Class[] {
+//				String.class, String.class, String.class, Boolean.class
+//			};
+//			public Class getColumnClass(int columnIndex) {
+//				return columnTypes[columnIndex];
+//			}
+//			boolean[] columnEditables = new boolean[] {
+//				false, false, false, true
+//			};
+//			public boolean isCellEditable(int row, int column) {
+//				return columnEditables[column];
+//			}
+//		});
 
 //		table.setBounds(10, 11, 306, 413);	
 		JScrollPane scrollPanelTasks = new JScrollPane(table);
@@ -209,7 +213,7 @@ public class MainScreen extends JFrame {
 				TaskDialogScreen taskDialogScreen = new TaskDialogScreen();
 //				taskDialogScreen.setProject(null);
 				taskDialogScreen.setVisible(true);
-				}
+			}
 		});
 		labelTasksAdd.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelTasksAdd.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -290,9 +294,17 @@ public class MainScreen extends JFrame {
 		taskController = new TaskController();
 	}
 	
+	public void loadTasks(int projectId) {
+		List<Task> tasks = taskController.getAll(projectId);
+		taskModel.setTasks(tasks);
+	}
+	
 	public void initComponentsModel() {
 		projectModel = new DefaultListModel<Project>();
 		loadProjects();
+		taskModel = new TaskTableModel();
+		table.setModel(taskModel);
+		loadTasks(37);
 	}
 	
 	public void loadProjects() {

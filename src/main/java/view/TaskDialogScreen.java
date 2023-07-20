@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 @SuppressWarnings("serial")
 public class TaskDialogScreen extends JDialog {
 	
-	TaskController controller = new TaskController();
+	TaskController controller;
 	Project project;
 	
 	private JTextField textFieldName;
@@ -140,7 +140,8 @@ public class TaskDialogScreen extends JDialog {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					Task task = new Task();
-					task.setIdProject(project.getId());
+					task.setIdProject(37);
+//					project.getId()
 					task.setName(textFieldName.getText());
 					task.setDescription(textAreaDescription.getText());
 					String deadlineText = formattedTextFieldDeadline.getText();
@@ -178,6 +179,8 @@ public class TaskDialogScreen extends JDialog {
 		);
 		panelTaskHeader.setLayout(gl_panelTaskHeader);
 		getContentPane().setLayout(groupLayout);
+		
+		controller = new TaskController();
 	}
 	
 	public void setProject(Project project) {
