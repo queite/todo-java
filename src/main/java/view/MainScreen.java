@@ -150,6 +150,20 @@ public class MainScreen extends JFrame {
 		panelListTasks.setLayout(new BorderLayout(0, 0));
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int rowIndex = table.rowAtPoint(e.getPoint());
+				int columnIndex = table.columnAtPoint(e.getPoint());
+				
+				switch(columnIndex) {
+				case 3:
+					Task task = taskModel.getTasks().get(rowIndex);
+					taskController.update(task);
+				}
+					
+			}
+		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setShowVerticalLines(false);
 		table.setRowHeight(40);
