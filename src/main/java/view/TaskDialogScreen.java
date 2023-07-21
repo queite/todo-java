@@ -2,7 +2,6 @@ package view;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.text.MaskFormatter;
 
 import controller.TaskController;
 import model.Project;
@@ -140,8 +139,7 @@ public class TaskDialogScreen extends JDialog {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					Task task = new Task();
-					task.setIdProject(37);
-//					project.getId()
+					task.setIdProject( project.getId());
 					task.setName(textFieldName.getText());
 					task.setDescription(textAreaDescription.getText());
 					String deadlineText = formattedTextFieldDeadline.getText();
