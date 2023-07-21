@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -18,17 +17,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.Dimension;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JLayeredPane;
 import javax.swing.JTable;
-import java.awt.CardLayout;
-
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import controller.ProjectController;
 import controller.TaskController;
@@ -42,6 +37,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class MainScreen extends JFrame {
 
@@ -171,29 +168,6 @@ public class MainScreen extends JFrame {
 //		table.getTableHeader().setBackground(Color.black);
 //		System.out.println(table.getTableHeader().getBackground());
 		decorateTableTasks();
-//		table.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//			},
-//			new String[] {
-//				"Nome", "Descricao", "Prazo", "Concluida"
-//			}
-//		) {
-//			Class[] columnTypes = new Class[] {
-//				String.class, String.class, String.class, Boolean.class
-//			};
-//			public Class getColumnClass(int columnIndex) {
-//				return columnTypes[columnIndex];
-//			}
-//			boolean[] columnEditables = new boolean[] {
-//				false, false, false, true
-//			};
-//			public boolean isCellEditable(int row, int column) {
-//				return columnEditables[column];
-//			}
-//		});
 
 //		table.setBounds(10, 11, 306, 413);	
 		JScrollPane scrollPanelTasks = new JScrollPane(table);
@@ -201,6 +175,14 @@ public class MainScreen extends JFrame {
 		panelListProjects.setLayout(new BorderLayout(0, 0));
         
 		list = new JList<Project>();
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				int projectIndex = list.getSelectedIndex();
+				Project project = (Project) projectModel.get(projectIndex);
+				loadTasks(project.getId());
+				taskModel.fireTableDataChanged();
+			}
+		});
 		list.setFixedCellHeight(40);
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {};
@@ -225,7 +207,9 @@ public class MainScreen extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				TaskDialogScreen taskDialogScreen = new TaskDialogScreen();
-//				taskDialogScreen.setProject(null);
+				int projectIndex = list.getSelectedIndex();
+				Project project = (Project) projectModel.get(projectIndex);
+				taskDialogScreen.setProject(project);
 				taskDialogScreen.setVisible(true);
 			}
 		});
@@ -310,7 +294,13 @@ public class MainScreen extends JFrame {
 	
 	public void loadTasks(int projectId) {
 		List<Task> tasks = taskController.getAll(projectId);
-		taskModel.setTasks(tasks);
+		if(!tasks.isEmpty()) {
+			table.setVisible(true);
+			taskModel.setTasks(tasks);
+		} else {
+			table.setVisible(false);
+			JOptionPane.showMessageDialog(null, "Projeto sem tarefas");
+		}
 	}
 	
 	public void initComponentsModel() {
@@ -318,7 +308,12 @@ public class MainScreen extends JFrame {
 		loadProjects();
 		taskModel = new TaskTableModel();
 		table.setModel(taskModel);
-		loadTasks(37);
+		
+		if(!projectModel.isEmpty()) {
+			list.setSelectedIndex(0);
+			Project project = (Project) projectModel.get(0);
+			loadTasks(project.getId());
+		}
 	}
 	
 	public void loadProjects() {
