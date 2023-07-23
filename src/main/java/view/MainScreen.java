@@ -211,6 +211,14 @@ public class MainScreen extends JFrame {
 				Project project = (Project) projectModel.get(projectIndex);
 				taskDialogScreen.setProject(project);
 				taskDialogScreen.setVisible(true);
+				
+				taskDialogScreen.addWindowListener(new WindowAdapter() {
+					public void windowClosed(WindowEvent e) {
+						int projectIndex = list.getSelectedIndex();
+						Project project = (Project) projectModel.get(projectIndex);
+						loadTasks(project.getId());
+					}
+				});			
 			}
 		});
 		labelTasksAdd.setHorizontalAlignment(SwingConstants.RIGHT);

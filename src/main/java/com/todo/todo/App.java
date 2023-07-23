@@ -32,7 +32,7 @@ public class App
     	
     	TaskController taskController = new TaskController();
     	
-    	Task task = new Task(1, "task1", "decription", "notes", 0, new Date(2023-8-28), new Date(), new Date());
+    	Task task = new Task(1, "task1", "decription", "notes", false, new Date(2023-8-28), new Date(), new Date());
     	System.out.println(task);
     	taskController.save(task);
     	
