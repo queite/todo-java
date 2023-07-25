@@ -29,6 +29,7 @@ import controller.ProjectController;
 import controller.TaskController;
 import model.Project;
 import model.Task;
+import util.ButtonColumnCellRenderer;
 import util.DeadlineColumnCellRenderer;
 import util.TaskTableModel;
 
@@ -320,7 +321,10 @@ public class MainScreen extends JFrame {
 		table.getTableHeader().setBackground(new Color(94,0,94));
 		table.getTableHeader().setForeground(new Color(255,255,255));
 		table.setAutoCreateRowSorter(true);
+		
 		table.getColumnModel().getColumn(2).setCellRenderer(new DeadlineColumnCellRenderer());
+		table.getColumnModel().getColumn(4).setCellRenderer(new ButtonColumnCellRenderer("edit"));
+		table.getColumnModel().getColumn(5).setCellRenderer(new ButtonColumnCellRenderer("delete"));
 	}
 	
 	public void initDataControler() {
