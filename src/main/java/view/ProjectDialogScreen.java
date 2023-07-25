@@ -126,20 +126,21 @@ public class ProjectDialogScreen extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Project project = new Project();
-					project.setName(textFieldName.getText());
-					project.setDescription(textAreaDescription.getText());
-					
-					controller.save(project);
-					
-					JOptionPane.showMessageDialog(rootPane, "Projeto Salvo com sucesso");
-					
+					if(!textFieldName.getText().isEmpty()) {
+						Project project = new Project();
+						project.setName(textFieldName.getText());
+						project.setDescription(textAreaDescription.getText());
+						controller.save(project);						
+						JOptionPane.showMessageDialog(rootPane, "Projeto Salvo com sucesso");
+						
+						Window window = SwingUtilities.getWindowAncestor(lableSave);
+						window.dispose();
+					} else {
+						JOptionPane.showMessageDialog(rootPane, "Campo nome obrigatório");
+					}									
 				}catch(Exception er){
 					JOptionPane.showMessageDialog(rootPane, er);
 				}
-				
-				Window window = SwingUtilities.getWindowAncestor(lableSave);
-				window.dispose();
 			}
 		});
 		lableSave.setIcon(new ImageIcon("C:\\Users\\Queite\\eclipse-workspace\\todo\\src\\main\\resources\\check-mark-3-32.png"));

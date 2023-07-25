@@ -138,21 +138,25 @@ public class TaskDialogScreen extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Task task = new Task();
-					task.setIdProject( project.getId());
-					task.setName(textFieldName.getText());
-					task.setDescription(textAreaDescription.getText());
-					String deadlineText = formattedTextFieldDeadline.getText();
-					task.setDeadline(dateFormat.parse(deadlineText));
-					task.setNotes(textAreaNotes.getText());
-					controller.save(task);
-					JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso.");
+					if(textFieldName.getText().isEmpty() || formattedTextFieldDeadline.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(rootPane, "Nome e prazo são campos obrigatórios");
+					} else {
+						Task task = new Task();
+						task.setIdProject( project.getId());
+						task.setName(textFieldName.getText());
+						task.setDescription(textAreaDescription.getText());
+						String deadlineText = formattedTextFieldDeadline.getText();
+						task.setDeadline(dateFormat.parse(deadlineText));
+						task.setNotes(textAreaNotes.getText());
+						controller.save(task);
+						JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso.");
+						
+						Window window = SwingUtilities.getWindowAncestor(labelTaskSave);
+						window.dispose();
+					}
 				} catch(Exception er) {
 					JOptionPane.showMessageDialog(rootPane, er);
 				}
-				
-			Window window = SwingUtilities.getWindowAncestor(labelTaskSave);
-			window.dispose();
 		}
 		});
 		labelTaskSave.setIcon(new ImageIcon("C:\\Users\\Queite\\eclipse-workspace\\todo\\src\\main\\resources\\check-mark-3-32.png"));

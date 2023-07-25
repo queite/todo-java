@@ -159,7 +159,6 @@ public class MainScreen extends JFrame {
 					break;
 				case 5:
 					taskController.removeById(task.getId());
-					System.out.println(task.getId());
 					taskModel.getTasks().remove(task);
 					int projectIndex = list.getSelectedIndex();
 					Project project = (Project) projectModel.get(projectIndex);
