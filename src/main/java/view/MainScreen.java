@@ -39,6 +39,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import java.awt.Rectangle;
 
 public class MainScreen extends JFrame {
 
@@ -113,18 +114,18 @@ public class MainScreen extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(5)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(panelHeader, GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+						.addComponent(panelHeader, GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(panelListProjects, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-								.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(panelListProjects, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+								.addGroup(gl_contentPane.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(panelProjects, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)))
+									.addComponent(panelProjects, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(panelTasks, GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+								.addComponent(panelTasks, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(panelListTasks, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+									.addComponent(panelListTasks, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)))))
 					.addGap(3))
 		);
@@ -140,11 +141,10 @@ public class MainScreen extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(panelListTasks, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addComponent(panelListProjects, GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)))
+							.addComponent(panelListTasks, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+							.addGap(22))
+						.addComponent(panelListProjects, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)))
 		);
-		panelListTasks.setLayout(new BorderLayout(0, 0));
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
@@ -152,11 +152,21 @@ public class MainScreen extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				int rowIndex = table.rowAtPoint(e.getPoint());
 				int columnIndex = table.columnAtPoint(e.getPoint());
+				Task task = taskModel.getTasks().get(rowIndex);
 				
 				switch(columnIndex) {
 				case 3:
-					Task task = taskModel.getTasks().get(rowIndex);
 					taskController.update(task);
+					break;
+				case 5:
+					taskController.removeById(task.getId());
+					System.out.println(task.getId());
+					taskModel.getTasks().remove(task);
+					int projectIndex = list.getSelectedIndex();
+					Project project = (Project) projectModel.get(projectIndex);
+					loadTasks(project.getId());
+					taskModel.fireTableDataChanged();
+					break;
 				}
 					
 			}
@@ -168,11 +178,11 @@ public class MainScreen extends JFrame {
 //		table.getTableHeader().setBackground(Color.black);
 //		System.out.println(table.getTableHeader().getBackground());
 		decorateTableTasks();
+		panelListTasks.setLayout(new BorderLayout(0, 0));
 
 //		table.setBounds(10, 11, 306, 413);	
 		JScrollPane scrollPanelTasks = new JScrollPane(table);
 		panelListTasks.add(scrollPanelTasks);
-		panelListProjects.setLayout(new BorderLayout(0, 0));
         
 		list = new JList<Project>();
 		list.addMouseListener(new MouseAdapter() {
@@ -205,7 +215,16 @@ public class MainScreen extends JFrame {
 		list.setSelectionBackground(new Color(151, 0, 151));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setFont(new Font("Segoe UI", Font.BOLD, 13));
-		panelListProjects.add(list);
+		GroupLayout gl_panelListProjects = new GroupLayout(panelListProjects);
+		gl_panelListProjects.setHorizontalGroup(
+			gl_panelListProjects.createParallelGroup(Alignment.LEADING)
+				.addComponent(list, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+		);
+		gl_panelListProjects.setVerticalGroup(
+			gl_panelListProjects.createParallelGroup(Alignment.LEADING)
+				.addComponent(list, GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+		);
+		panelListProjects.setLayout(gl_panelListProjects);
 		
 		JLabel labelTasks = new JLabel("Tarefas");
 		labelTasks.setFont(new Font("Segoe UI", Font.BOLD, 14));
