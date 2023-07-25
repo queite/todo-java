@@ -29,6 +29,7 @@ import controller.ProjectController;
 import controller.TaskController;
 import model.Project;
 import model.Task;
+import util.DeadlineColumnCellRenderer;
 import util.TaskTableModel;
 
 import java.awt.BorderLayout;
@@ -37,9 +38,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
-import java.awt.Rectangle;
 
 public class MainScreen extends JFrame {
 
@@ -177,7 +175,6 @@ public class MainScreen extends JFrame {
 //		System.out.println(table.getTableHeader().getBackground());
 //		table.getTableHeader().setBackground(Color.black);
 //		System.out.println(table.getTableHeader().getBackground());
-		decorateTableTasks();
 		panelListTasks.setLayout(new BorderLayout(0, 0));
 
 //		table.setBounds(10, 11, 306, 413);	
@@ -316,12 +313,14 @@ public class MainScreen extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		initDataControler();
 		initComponentsModel();
+		decorateTableTasks();
 	}
 	public void decorateTableTasks() {
 		table.getTableHeader().setFont(new Font("Segoi UI", Font.BOLD, 14));
 		table.getTableHeader().setBackground(new Color(94,0,94));
 		table.getTableHeader().setForeground(new Color(255,255,255));
 		table.setAutoCreateRowSorter(true);
+		table.getColumnModel().getColumn(2).setCellRenderer(new DeadlineColumnCellRenderer());
 	}
 	
 	public void initDataControler() {
