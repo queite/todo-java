@@ -175,14 +175,23 @@ public class MainScreen extends JFrame {
 		panelListProjects.setLayout(new BorderLayout(0, 0));
         
 		list = new JList<Project>();
-		list.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				int projectIndex = list.getSelectedIndex();
 				Project project = (Project) projectModel.get(projectIndex);
 				loadTasks(project.getId());
 				taskModel.fireTableDataChanged();
 			}
 		});
+//		list.addListSelectionListener(new ListSelectionListener() {
+//			public void valueChanged(ListSelectionEvent e) {
+//				int projectIndex = list.getSelectedIndex();
+//				Project project = (Project) projectModel.get(projectIndex);
+//				loadTasks(project.getId());
+//				taskModel.fireTableDataChanged();
+//			}
+//		});
 		list.setFixedCellHeight(40);
 		list.setModel(new AbstractListModel() {
 			String[] values = new String[] {};
@@ -217,6 +226,7 @@ public class MainScreen extends JFrame {
 						int projectIndex = list.getSelectedIndex();
 						Project project = (Project) projectModel.get(projectIndex);
 						loadTasks(project.getId());
+						taskModel.fireTableDataChanged();
 					}
 				});			
 			}
